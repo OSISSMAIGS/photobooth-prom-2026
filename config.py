@@ -2,7 +2,7 @@ import os
 
 GOOGLE_APPS_SCRIPT_URL = os.environ.get(
     "GOOGLE_APPS_SCRIPT_URL",
-    "https://script.google.com/macros/s/YOUR_SCRIPT_ID/exec",
+    "https://script.google.com/macros/s/AKfycbz-gFM0CY87SohYZfypRaMVNBFH6fV6g2lXrIm1s_i8EU4_0bpzF8ZlDWpDBp5l-aLdTw/exec",
 )
 
 REFRESH_INTERVAL = int(os.environ.get("REFRESH_INTERVAL", "5"))
