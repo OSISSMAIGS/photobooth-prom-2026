@@ -1,0 +1,46 @@
+<nav class="navbar fixed top-0 left-0 right-0 z-50 transition-all duration-300" id="navbar">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex items-center justify-between h-16 md:h-20">
+      <a href="{{ url_for('index') }}" class="navbar-brand flex items-center gap-3 group" aria-label="Ardraxis — Home">
+        <span class="navbar-logo-wrap">
+          <img
+            src="{{ url_for('static', filename='img/logo_ardraxis.png') }}"
+            alt="Ardraxis"
+            class="navbar-logo"
+            width="44"
+            height="44"
+          >
+        </span>
+        <span class="flex flex-col leading-tight">
+          <span class="font-display text-lg md:text-xl text-cream tracking-wide group-hover:text-gold transition-colors">
+            Starry Night
+          </span>
+          <span class="text-[10px] md:text-xs text-gold/70 tracking-[0.2em] uppercase">by Ardraxis</span>
+        </span>
+      </a>
+
+      <div class="hidden md:flex items-center gap-8">
+        <a href="{{ url_for('index') }}" class="nav-link {% if request.endpoint == 'index' %}active{% endif %}">Home</a>
+        <a href="{{ url_for('gallery') }}" class="nav-link {% if request.endpoint == 'gallery' %}active{% endif %}">Gallery</a>
+        <a href="{{ url_for('gallery') }}" class="btn-primary text-sm py-2 px-5">Open Gallery</a>
+      </div>
+
+      <button type="button" class="md:hidden p-2 text-cream hover:text-gold transition-colors" id="mobile-menu-btn" aria-label="Toggle menu" aria-expanded="false">
+        <svg class="h-6 w-6" id="menu-icon-open" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+        </svg>
+        <svg class="h-6 w-6 hidden" id="menu-icon-close" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+        </svg>
+      </button>
+    </div>
+  </div>
+
+  <div class="md:hidden hidden glass-panel mx-4 mb-4 rounded-2xl overflow-hidden" id="mobile-menu">
+    <div class="flex flex-col p-4 gap-2">
+      <a href="{{ url_for('index') }}" class="nav-link-mobile">Home</a>
+      <a href="{{ url_for('gallery') }}" class="nav-link-mobile">Gallery</a>
+      <a href="{{ url_for('gallery') }}" class="btn-primary text-center mt-2">Open Gallery</a>
+    </div>
+  </div>
+</nav>

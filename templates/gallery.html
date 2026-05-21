@@ -1,0 +1,97 @@
+{% extends "base.html" %}
+
+{% block title %}Gallery — Starry Night Photobooth{% endblock %}
+
+{% block content %}
+<section class="gallery-page pt-24 md:pt-28 pb-16 min-h-screen">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <header class="text-center mb-12 md:mb-16 fade-up">
+      <p class="text-gold/80 text-sm tracking-[0.25em] uppercase mb-3">{{ event_name }}</p>
+      <h1 class="font-display text-3xl md:text-5xl text-cream mb-4">Photo Gallery</h1>
+      <p class="text-cream/60 max-w-xl mx-auto">
+        Fresh memories from the photobooth — updated automatically
+      </p>
+      <div class="flex items-center justify-center gap-2 mt-6 text-sm text-cream/40" id="refresh-status">
+        <span class="live-dot"></span>
+        <span>Live · refreshes every {{ refresh_interval }}s</span>
+      </div>
+    </header>
+
+    <div id="gallery-empty" class="empty-state {% if photos %}hidden{% endif %}">
+      <div class="glass-card max-w-md mx-auto text-center p-12">
+        <div class="empty-icon mb-6">✦</div>
+        <h2 class="font-display text-2xl text-cream mb-3">No photos yet</h2>
+        <p class="text-cream/50 text-sm">
+          Photos will appear here as soon as they are captured at the booth.
+        </p>
+      </div>
+    </div>
+
+    <div id="gallery-grid" class="masonry-grid {% if not photos %}hidden{% endif %}">
+      {% for photo in photos %}
+      <article
+        class="gallery-card fade-up"
+        data-photo-id="{{ photo.url | replace('/', '_') }}"
+        data-url="{{ photo.url }}"
+        data-name="{{ photo.name }}"
+        data-created="{{ photo.createdTime }}"
+      >
+        <button type="button" class="gallery-card-btn w-full text-left" data-lightbox>
+          <div class="card-image-wrap">
+            <img
+              src="{{ photo.thumbnail }}"
+              alt="{{ photo.name }}"
+              loading="lazy"
+              class="gallery-img"
+              data-full="{{ photo.url }}"
+            >
+            <div class="card-overlay">
+              <span class="text-cream text-sm font-medium truncate">{{ photo.name }}</span>
+            </div>
+          </div>
+        </button>
+      </article>
+      {% endfor %}
+    </div>
+
+    <div id="gallery-skeleton" class="masonry-grid hidden">
+      {% for _ in range(6) %}
+      <div class="skeleton-card">
+        <div class="skeleton-shimmer"></div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<div id="lightbox" class="lightbox hidden" role="dialog" aria-modal="true" aria-label="Photo preview">
+  <div class="lightbox-backdrop" data-lightbox-close></div>
+  <div class="lightbox-content">
+    <button type="button" class="lightbox-close" data-lightbox-close aria-label="Close">
+      <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+      </svg>
+    </button>
+    <img id="lightbox-img" src="" alt="" class="lightbox-image">
+    <div class="lightbox-footer">
+      <p id="lightbox-title" class="text-cream font-medium truncate"></p>
+      {% if enable_download %}
+      <a id="lightbox-download" href="#" download class="btn-primary text-sm py-2 px-4 shrink-0">
+        Download
+      </a>
+      {% endif %}
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+  window.GALLERY_CONFIG = {
+    refreshInterval: {{ refresh_interval }} * 1000,
+    enableDownload: {{ 'true' if enable_download else 'false' }},
+    apiUrl: "{{ url_for('api_photos') }}"
+  };
+</script>
+<script src="{{ url_for('static', filename='js/gallery.js') }}" defer></script>
+{% endblock %}
